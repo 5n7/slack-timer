@@ -60,10 +60,6 @@ func (s *Slack) Callback(event slackevents.EventsAPIEvent) error {
 				return err
 			}
 
-			if _, _, err := api.PostMessage(e.Channel, slack.MsgOptionText(fmt.Sprintf("timer started at %s", now()), false)); err != nil {
-				return err
-			}
-
 			if len(commands) > 2 {
 				switch commands[2] {
 				case "sec":
@@ -72,11 +68,20 @@ func (s *Slack) Callback(event slackevents.EventsAPIEvent) error {
 				}
 			}
 
+			var memo string
+			if len(commands) > 3 {
+				memo = "; " + strings.Join(commands[3:], " ")
+			}
+
+			if _, _, err := api.PostMessage(e.Channel, slack.MsgOptionText(fmt.Sprintf("timer started at %s%s", now(), memo), false)); err != nil {
+				return err
+			}
+
 			timer := time.NewTimer(time.Second * time.Duration(dur))
 			defer timer.Stop()
 			select {
 			case <-timer.C:
-				if _, _, err := api.PostMessage(e.Channel, slack.MsgOptionText(fmt.Sprintf("timer finished at %s", now()), false)); err != nil {
+				if _, _, err := api.PostMessage(e.Channel, slack.MsgOptionText(fmt.Sprintf("timer finished at %s%s", now(), memo), false)); err != nil {
 					return err
 				}
 			}
