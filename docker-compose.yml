@@ -1,0 +1,14 @@
+version: "3.5"
+
+services:
+  app:
+    build:
+      context: .
+      target: builder
+    command: CompileDaemon --build="make build" --command=./bin/slack-timer
+    env_file:
+      - .env
+    ports:
+      - ${PORT}:8080
+    volumes:
+      - .:/app
