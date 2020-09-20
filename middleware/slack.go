@@ -1,6 +1,8 @@
 package middleware
 
 import (
+	"bytes"
+	"context"
 	"io"
 	"io/ioutil"
 	"log"
@@ -8,7 +10,6 @@ import (
 	"os"
 
 	"github.com/skmatz/slack-timer/httputil"
-
 	"github.com/slack-go/slack"
 )
 
@@ -32,18 +33,21 @@ func (s *Slack) Handler(next http.Handler) http.Handler {
 		}
 
 		bodyReader := io.TeeReader(r.Body, &verifier)
-		_, err = ioutil.ReadAll(bodyReader)
+		b, err := ioutil.ReadAll(bodyReader)
 		if err != nil {
 			log.Print(err)
 			httputil.RespondJSONError(w, http.StatusInternalServerError, err)
 			return
 		}
+		r.Body = ioutil.NopCloser(bytes.NewReader(b))
 
 		if err := verifier.Ensure(); err != nil {
 			log.Print(err)
 			httputil.RespondJSONError(w, http.StatusBadRequest, err)
 			return
 		}
-		next.ServeHTTP(w, r)
+
+		ctx := context.Background()
+		next.ServeHTTP(w, r.WithContext(ctx))
 	})
 }
