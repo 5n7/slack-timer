@@ -19,7 +19,7 @@ func NewSlack() *Slack {
 
 func (s *Slack) Post(w http.ResponseWriter, r *http.Request) (int, interface{}, error) {
 	if r.Header.Get("X-Slack-Retry-Num") != "" {
-		return http.StatusInternalServerError, nil, fmt.Errorf("incalid request: retry request")
+		return http.StatusInternalServerError, nil, fmt.Errorf("invalid request: retry request")
 	}
 
 	b, err := ioutil.ReadAll(r.Body)
