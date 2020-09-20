@@ -21,7 +21,7 @@ Valid arguments are the following.
 
 ## Develop
 
-Add a BOT with `app_mentions:read` and `chat:write` permissions to your Slack channel and set .env.
+Add a BOT with `app_mentions:read` and `chat:write` permissions to your Slack workspace and set .env.
 
 ```
 docker-compose up --build
