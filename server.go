@@ -8,7 +8,9 @@ import (
 
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
+	"github.com/justinas/alice"
 	"github.com/skmatz/slack-timer/controller"
+	"github.com/skmatz/slack-timer/middleware"
 )
 
 type Server struct {
@@ -32,6 +34,10 @@ func (s *Server) Run(port int) error {
 }
 
 func (s *Server) Route() *mux.Router {
+	slackMiddleware := middleware.NewSlack()
+	basicChain := alice.New()
+	slackChain := basicChain.Append(slackMiddleware.Handler)
+
 	r := mux.NewRouter()
 	slackController := controller.NewSlack()
 
@@ -40,6 +46,6 @@ func (s *Server) Route() *mux.Router {
 		w.Write([]byte("pong"))
 	})
 
-	r.Methods(http.MethodPost).Path("/slack").Handler(AppHandler{slackController.Post})
+	r.Methods(http.MethodPost).Path("/slack").Handler(slackChain.Then(AppHandler{slackController.Post}))
 	return r
 }

@@ -41,7 +41,7 @@ func (s *Slack) Post(w http.ResponseWriter, r *http.Request) (int, interface{}, 
 			return http.StatusInternalServerError, nil, err
 		}
 	case slackevents.URLVerification:
-		challenge, err := slackService.Verify(b)
+		challenge, err := slackService.Challenge(b)
 		if err != nil {
 			log.Print(err)
 			return http.StatusInternalServerError, nil, err

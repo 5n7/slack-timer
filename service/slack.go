@@ -90,7 +90,7 @@ func (s *Slack) Callback(event slackevents.EventsAPIEvent) error {
 	return nil
 }
 
-func (s *Slack) Verify(b []byte) (string, error) {
+func (s *Slack) Challenge(b []byte) (string, error) {
 	var r *slackevents.ChallengeResponse
 	if err := json.Unmarshal(b, &r); err != nil {
 		return "", err
