@@ -53,7 +53,7 @@ func (s *Slack) Callback(event slackevents.EventsAPIEvent) error {
 				return fmt.Errorf("timer command got invalid message: %s", e.Text)
 			}
 
-			sec, err := strconv.Atoi(commands[1])
+			dur, err := strconv.Atoi(commands[1])
 			if err != nil {
 				return err
 			}
@@ -62,7 +62,15 @@ func (s *Slack) Callback(event slackevents.EventsAPIEvent) error {
 				return err
 			}
 
-			timer := time.NewTimer(time.Second * time.Duration(sec))
+			if len(commands) > 2 {
+				switch commands[2] {
+				case "sec":
+				case "min":
+					dur *= 60
+				}
+			}
+
+			timer := time.NewTimer(time.Second * time.Duration(dur))
 			defer timer.Stop()
 			select {
 			case <-timer.C:
