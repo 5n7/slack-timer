@@ -15,8 +15,10 @@ import (
 )
 
 var (
-	slackToken = os.Getenv("SLACK_TOKEN")
-	timeZone   = "Asia/Tokyo"
+	slackToken     = os.Getenv("SLACK_TOKEN")
+	timeFormat     = "15:04:05"
+	timeZoneName   = "Asia/Tokyo"
+	timeZoneOffset = 9 * 60 * 60
 )
 
 type Slack struct{}
@@ -27,8 +29,8 @@ func NewSlack() *Slack {
 
 func now() string {
 	utc := time.Now().UTC()
-	jst := time.FixedZone(timeZone, 9*60*60)
-	return utc.In(jst).Format(time.RFC1123Z)
+	jst := time.FixedZone(timeZoneName, timeZoneOffset)
+	return utc.In(jst).Format(timeFormat)
 }
 
 func (s *Slack) Callback(event slackevents.EventsAPIEvent) error {
