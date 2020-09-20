@@ -6,3 +6,8 @@ build:
 format:
 	go mod tidy
 	goimports -w .
+
+
+.PHONY: test
+test:
+	go test -v ./...
