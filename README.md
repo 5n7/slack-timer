@@ -14,10 +14,10 @@ If it is working, the BOT posts the message `pong` to the same channel.
 Measure the time.  
 Valid arguments are the following.
 
-- `@bot timer 3`: Measures 3 seconds.
-- `@bot timer 3 sec`: Measures 3 seconds.
-- `@bot timer 3 min`: Measures 3 minutes.
-- `@bot timer 3 sec Hello, world!`: Measures 3 seconds with the memo: "Hello, world!".
+- `@bot timer 3`: Measure 3 seconds.
+- `@bot timer 3 sec`: Measure 3 seconds.
+- `@bot timer 3 min`: Measure 3 minutes.
+- `@bot timer 3 sec Hello, world!`: Measure 3 seconds with the memo: "Hello, world!".
 
 ## Develop
 
