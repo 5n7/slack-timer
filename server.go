@@ -34,8 +34,9 @@ func (s *Server) Run(port int) error {
 }
 
 func (s *Server) Route() *mux.Router {
+	recoverMiddleware := middleware.NewRecover()
 	slackMiddleware := middleware.NewSlack()
-	basicChain := alice.New()
+	basicChain := alice.New(recoverMiddleware.Handler)
 	slackChain := basicChain.Append(slackMiddleware.Handler)
 
 	r := mux.NewRouter()
