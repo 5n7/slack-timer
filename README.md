@@ -26,3 +26,8 @@ Add a BOT with `app_mentions:read` and `chat:write` permissions to your Slack wo
 ```
 docker-compose up --build
 ```
+
+## Deploy
+
+I recommend using [Cloud Run](https://cloud.google.com/run) provided by GCP.  
+You just select the forked-repository, set two environment variables, and set an endpoint for the Slack event API.
