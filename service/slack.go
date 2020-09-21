@@ -9,7 +9,6 @@ import (
 	"time"
 
 	"github.com/skmatz/slack-timer/etc"
-
 	"github.com/slack-go/slack"
 	"github.com/slack-go/slack/slackevents"
 )
